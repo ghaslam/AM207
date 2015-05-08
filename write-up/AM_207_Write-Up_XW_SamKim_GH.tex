@@ -15,7 +15,7 @@
 % \documentstyle[nips13submit_09,times,art10]{article} % For LaTeX 2.09
 \bibliographystyle{ieeetr}
 
-\title{Predicting water pump failure and optimising maintenance schedules in Tanzania}
+\title{Predicting water pump failure in Tanzania and optimising maintenance routes}
 
 
 \author{
@@ -49,7 +49,7 @@ Cambridge, MA 02138 \\
 \maketitle
 
 \begin{abstract}
-Using MCMC techniques, we model civil conflict in Uganda. We describe a method to simulate civil conflict events in space and time given historical data about these events. We also optimize the delivery of humanitarian aid as a combination of the traveling salesman problem and the Knapsack problem --- two NP-hard problems --- we find acceptable solutions using stochastic metaheuristics. Code and more information are available at \url{http://ghaslam.github.io/am207/}.
+We describe MCMC techniques to model the functionality of water pumps in Tanzania and suggest an optimised route for their maintenance. Using field data describing various attributes of each pump, such as construction year, installer, and location, we describe a method to predict the current status of the pump from a set of three possibilities (functioning, functioning needs repair, and not functioning). We also optimize the route that a maintenance crew could take to repair damaged pumps in a version of the well--known, NP--hard, traveling salesman problem. We find acceptable solutions using stochastic metaheuristics. Code and more information are available at \url{http://ghaslam.github.io/AM207/}.
 \end{abstract}
 \section{Introduction}
 
@@ -61,25 +61,25 @@ We approach this problem as a constrained optimization problem over the space of
 
 \section{The Data}
 
-The data comes from ACLED (Armed Conflict Location and Event Data Project), which is a dataset with locations, dates, fatalities, motivation, actors involved, and other information about civil conflicts in Africa. Their collection of data on Uganda covers 1997-2013, and they have a real-time tracker of events reported in 2014.\cite{ACLED} The need for an understanding of these patterns of conflict is clear, as ACLED notes:
+The data for this project was provided as part of a data science challenge run by DrivenData.org \cite{DrivenData2015}. DrivenData aims to encourage data scientists from around the world to take part in online competitions to develop predictive statistical models that can address important problems in the fields of health, international development, and the environment. The data for the Tanzanian water pump competition was aggregated from the Tanzanian Ministry of Water by Taarifa, an open source platform for tracking infrastructure related issues \cite{Taarifa2015}.  which is a dataset with locations, dates, fatalities, motivation, actors involved, and other information about civil conflicts in Africa. Their collection of data on Uganda covers 1997-2013, and they have a real-time tracker of events reported in 2014.\cite{ACLED} The need for an understanding of these patterns of conflict is clear, as ACLED notes:
 
 \begin{quote}
-This dataset codes the dates and locations of all reported political violence events in over 50 developing countries. Political violence includes events that occur within civil wars or periods of instability. Although civil war occurrence is decreasing across African countries, new forms of political violence are becoming more common.
+This dataset gives information on a range of parameters on water pumps in Tanzania. Information is obtained by either on-site inspection or by independent submissions. Each pump is assigned a unique ID as well as precise coordinates for its locations. A subset of the parameters are shown to indicate the type of data available. The final column indicates the current status of the pump which the model will attempt to predict. Not all pumps have complete records for every parameter and issues with missing data and imputation are discussed in the text.
 \end{quote}
 
 \begin{table}[H]
-\caption{The ACLED Uganda Dataset}
+\caption{The DrivenData Tanzania Dataset}
 \centering
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lrlrlrrrr}
 \toprule
-{} &  GWNO & EVENT\_DATE &  TIME\_PRECISION &                     EVENT\_TYPE &  LATITUDE &  LONGITUDE &  GEO\_PRECIS &  FATALITIES \\
+ID &         Installer        &  GPS Height & Longitude & Latitude &   Construction\_Year &  Source\_Type &  Quantity\_Type & Status\_Group  \\
 \midrule
-0 &   500 & 1997-01-01 &               3 &  Battle-No change of territory &   0.50000 &   32.00000 &           3 &           5 \\
-1 &   500 & 1997-01-01 &               3 &  Battle-No change of territory &   2.76667 &   32.30556 &           3 &           4 \\
-2 &   500 & 1997-01-07 &               1 &  Battle-No change of territory &   0.13580 &   30.36360 &           1 &           5 \\
-3 &   500 & 1997-01-08 &               1 &  Battle-No change of territory &   0.18333 &   30.08333 &           3 &           2 \\
-4 &   500 & 1997-01-11 &               1 &     Violence against civilians &   3.12583 &   32.91972 &           1 &           0 \\
+69572 &   Roman         & 1390             &       34.93 &  -9.86 &   1983 &                         Spring &          Enough  &           Functioning \\
+8776 &   Grumeti          & 1399             &      34.69 &  -2.15 &   2002 &                          Rainwater &           Insufficient &          Functioning Needs Repair  \\
+34310 &   World Vision & 686               &    37.46 &  -3.82 &   1967 &                           Dam &           Enough &           Functioning Needs Repair \\
+67743 &   UNICEF       & 263                &   38.49 &  -11.15  &   1997 &                         Machine &           Dry &         Non-functioning \\
+19728 &   Artisan          &  0                  &   31.13 &     -1.83 &   2007 &                         Rainwater &           Seasonal &           Functioning  \\
 \bottomrule
 \end{tabular}
 }
@@ -344,7 +344,6 @@ Our initial assumption was that the HQ was located in the capital city of Kampal
 
 In each part of this problem, analytical solutions either do not exist (e.g. in the distribution of events) or are computationally infeasible (e.g. in the TSP/Knapsack optimizations).  We found that using a metaheuristic such as SA converged on robust solutions in relatively short order. In the future, we would like to formulate our loss function based on real world data based on refugee locations and aid distribution requirements; our methodology would not change, but the solutions would be more useful for predictive tasks. Additionally, the separate models could be fit and incorporated which realistically model how much of each type of aid is needed at each conflict location. Future research might also include adding many more constraints or twists to the problem, and trying different stochastic optimization techniques such as genetic algorithms, Tabu search, or ant colony optimization.
 
-
-\bibliography{proposal}
+\bibliography{Write-up_Ref}
 
 \end{document}
