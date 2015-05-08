@@ -22,7 +22,7 @@
 Sam Kim \\
 Harvard College\\
 Cambridge, MA 02138 \\
-\texttt{kim@college.harvard.edu} \\
+\texttt{samuelkim@college.harvard.edu} \\
 \And
 Gareth Haslam \\
 Harvard Extension School\\
@@ -51,21 +51,16 @@ Cambridge, MA 02138 \\
 \begin{abstract}
 We describe MCMC techniques to model the functionality of water pumps in Tanzania and suggest an optimised route for their maintenance. Using field data describing various attributes of each pump, such as construction year, installer, and location, we describe a method to predict the current status of the pump from a set of three possibilities (functioning, functioning needs repair, and not functioning). We also optimize the route that a maintenance crew could take to repair damaged pumps in a version of the well--known, NP--hard, traveling salesman problem. We find acceptable solutions using stochastic metaheuristics. Code and more information are available at \url{http://ghaslam.github.io/AM207/}.
 \end{abstract}
+
 \section{Introduction}
 
-There is a rich literature on civil conflict and political violence in Africa \cite{collier2002incidence}. Many papers aim to explore correlation and causation between incidents of political violence and other indicators--be they economic \cite{buhaug2006local}, climatological \cite{hendrix2012climate}, or cultural \cite{van1999temperature}. These papers generally rely on hypothesis testing to confirm the relationship between these predictors and civil conflict, with the ultimate goal being an understanding of the causes of political violence.
+Access to clean water is a fundamental need for people all over the world. Around 11\% of the world's population currently lack such access due to either lack of natural resources or lack of infrastructure \cite{UN2013}. In Tanzania, despite the availability of water, only 33.5\% have access to a piped source \cite{Morisset2012}. Many others depend on pumps for their supply. When these pumps fail, that can create serious problems for the people who depend on them. Previous work on predicting the failure of mechanical devices such as pumps has benefitted from the use of both statistical analysis as well as data obtained from direct observation of the machines, for example diagnostic vibration sensors \cite{Nakamura2007}. As the popularity of machine learning and 'big data' continues to grow, researchers are also studying how failure can be predicted based on training data from large historical datasets, for example for rod pumps in the oil industry \cite{Liu2013}. Liu's research used subject matter experts to first identify whether a pump was operating normally or about to fail and then trained their model to recognise the features in the data such as daily usage, that predicted the label. 
 
-We aim to answer a slightly different question that concentrates on the response to, rather than the causes of, violence. If we have a generative model with uncertainty measures for when and where political violence will occur, how can we go about planning for and optimizing our resource use in the face of this uncertainty?
-
-We approach this problem as a constrained optimization problem over the space of potential conflicts across the country of Uganda. We use monte carlo techniques to optimize the delivery of aid resources to the simulated events. It's our belief that using these methods can help humanitarian relief organizations better prepare and strategize for events of civil violence.
+We aim to use Bayesian Methods to assign one of three categorical labels indicating the functional status each pump (functioning, functioning needs repair, and not functioning). Then, we treat the repair of the damaged pumps as a constrained optimisation problem over the space of all possible routes that the maintenance crew could take to reach the damaged wells. We ignore the existing road infrastructure, terrain, height etc. and assume that all locations are equally accessible. 
 
 \section{The Data}
 
-The data for this project was provided as part of a data science challenge run by DrivenData.org \cite{DrivenData2015}. DrivenData aims to encourage data scientists from around the world to take part in online competitions to develop predictive statistical models that can address important problems in the fields of health, international development, and the environment. The data for the Tanzanian water pump competition was aggregated from the Tanzanian Ministry of Water by Taarifa, an open source platform for tracking infrastructure related issues \cite{Taarifa2015}.  which is a dataset with locations, dates, fatalities, motivation, actors involved, and other information about civil conflicts in Africa. Their collection of data on Uganda covers 1997-2013, and they have a real-time tracker of events reported in 2014.\cite{ACLED} The need for an understanding of these patterns of conflict is clear, as ACLED notes:
-
-\begin{quote}
-This dataset gives information on a range of parameters on water pumps in Tanzania. Information is obtained by either on-site inspection or by independent submissions. Each pump is assigned a unique ID as well as precise coordinates for its locations. A subset of the parameters are shown to indicate the type of data available. The final column indicates the current status of the pump which the model will attempt to predict. Not all pumps have complete records for every parameter and issues with missing data and imputation are discussed in the text.
-\end{quote}
+The data for this project was provided as part of a data science challenge run by DrivenData.org \cite{DrivenData2015}. DrivenData aims to encourage data scientists from around the world to take part in online competitions to develop predictive statistical models that can address important problems in the fields of health, international development, and the environment. The data for the Tanzanian water pump competition was aggregated from the Tanzanian Ministry of Water by Taarifa, an open source platform for tracking infrastructure related issues \cite{Taarifa2015}.  The dataset contains records of 59,400 water pumps with information on a range of 39 parameters, such as pump construction year, installer, type of pump, water quality, population around the well, cost of water, quantity and others. These include a mix of categorical and numerical data, and there are also many missing values. Each pump is assigned a unique ID as well as precise coordinates for its locations. A subset of the parameters are shown in Table 1. The final column in Table 1 indicates the current status of the pump which the model will attempt to predict. The optimisation algorithm will then attempt to find the route that reaches the damaged pumps in the s
 
 \begin{table}[H]
 \caption{The DrivenData Tanzania Dataset}
@@ -86,22 +81,22 @@ ID &         Installer        &  GPS Height & Longitude & Latitude &   Construct
 \end{table}
 
 
-In this project, we will focus on the Republic of Uganda, for which the dataset contains around 4,500 observations of civil violence. Each observation includes the date, geographic location, event type, number of fatalities for the event, actors involved and a meta-measure which estimates how precise these measures are. Figure \ref{fig:map-points} shows these conflicts scattered on a political map of Uganda.
+In addition to the parameters given in the original dataset, we calculate some additional parameters such as age (based on the construction year), and relative remoteness (based on the average distance of the 5 nearest neighbours). Figure \ref{fig:map-phys} shows a map of the physical geography of Tanzania and another showing the locations of the pumps. The high density of pumps appears as a solid blue colour but actually represents many individual points.
 
 \begin{figure}
   \centering
   \begin{subfigure}[b]{0.5\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/uganda}
-    \caption{Civil conflicts in Uganda 1997-2013.}
-    \label{fig:map-points}
+    \includegraphics[width=\textwidth]{figures/Tanzania}
+    \caption{Physical geography of Tanzania.}
+    \label{fig:map-phys}
   \end{subfigure}~\begin{subfigure}[b]{0.5\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/map-with-smoothed-data}
-    \caption{Conflicts with Mat\'{e}rn smoothing.}
-    \label{fig:map-smoothed}
+    \includegraphics[width=\textwidth]{figures/PumpMap}
+    \caption{Distribution of water pumps.}
+    \label{fig:map-points}
   \end{subfigure}
-  \caption{Civil conflicts in Uganda.}
+  \caption{Geography of Tanzania and distribution of water pumps.}
   \label{fig:map}
 \end{figure}
 

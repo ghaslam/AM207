@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.1.20)  8 MAY 2015 08:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.1.20)  8 MAY 2015 16:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -452,251 +452,212 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 51.
-
-
-LaTeX Warning: Citation `collier2002incidence' on page 1 undefined on input lin
-e 56.
-
-
-LaTeX Warning: Citation `buhaug2006local' on page 1 undefined on input line 56.
-
-
-
-LaTeX Warning: Citation `hendrix2012climate' on page 1 undefined on input line 
-56.
-
-
-LaTeX Warning: Citation `van1999temperature' on page 1 undefined on input line 
-56.
-
-
-LaTeX Warning: Citation `ACLED' on page 1 undefined on input line 64.
-
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 71.
-[1
+ [1
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 66.
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:95: LaTeX Error: File `figures/uganda' not f
-ound.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.95 ...graphics[width=\textwidth]{figures/uganda}
-                                                  
-? 
+LaTeX Warning: Reference `fig:map-phys' on page 2 undefined on input line 84.
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:100: LaTeX Error: File `figures/map-with-smo
-othed-data' not found.
+<figures/Tanzania.png, id=77, 496.85625pt x 476.8725pt>
+File: figures/Tanzania.png Graphic file (type png)
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.100 ...extwidth]{figures/map-with-smoothed-data}
-                                                  
-? 
+<use figures/Tanzania.png>
+Package pdftex.def Info: figures/Tanzania.png used on input line 90.
+(pdftex.def)             Requested size: 198.7425pt x 190.7529pt.
 
-Overfull \hbox (1.90002pt too wide) in paragraph at lines 93--104
+<figures/PumpMap.png, id=78, 353.32pt x 189.70876pt>
+File: figures/PumpMap.png Graphic file (type png)
+ <use figures/PumpMap.png>
+Package pdftex.def Info: figures/PumpMap.png used on input line 95.
+(pdftex.def)             Requested size: 198.7425pt x 106.7109pt.
+
+Overfull \hbox (1.90002pt too wide) in paragraph at lines 88--99
  [][] [] 
  []
 
+[2 <./figures/Tanzania.png (PNG copy)> <./figures/PumpMap.png>]
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:121: LaTeX Error: File `figures/1000-slice-s
+./AM_207_Write-Up_XW_SamKim_GH.tex:116: LaTeX Error: File `figures/1000-slice-s
 amples' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.121 ...h=\textwidth]{figures/1000-slice-samples}
+l.116 ...h=\textwidth]{figures/1000-slice-samples}
                                                   
 ? 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:126: LaTeX Error: File `figures/histogram' n
+./AM_207_Write-Up_XW_SamKim_GH.tex:121: LaTeX Error: File `figures/histogram' n
 ot found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.126 ...hics[width=\textwidth]{figures/histogram}
+l.121 ...hics[width=\textwidth]{figures/histogram}
                                                   
 ? 
 
-Overfull \hbox (1.90002pt too wide) in paragraph at lines 119--130
+Overfull \hbox (1.90002pt too wide) in paragraph at lines 114--125
  [][] [] 
  []
 
 
-LaTeX Warning: Citation `Gelman-Rubin' on page 2 undefined on input line 133.
-
-
-./AM_207_Write-Up_XW_SamKim_GH.tex:139: LaTeX Error: File `figures/autocorr-lat
+./AM_207_Write-Up_XW_SamKim_GH.tex:134: LaTeX Error: File `figures/autocorr-lat
 long' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.139 ...dth=\textwidth]{figures/autocorr-latlong}
+l.134 ...dth=\textwidth]{figures/autocorr-latlong}
                                                   
 ? 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:145: LaTeX Error: File `figures/trace-plots'
+./AM_207_Write-Up_XW_SamKim_GH.tex:140: LaTeX Error: File `figures/trace-plots'
  not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.145 ...cs[width=\textwidth]{figures/trace-plots}
+l.140 ...cs[width=\textwidth]{figures/trace-plots}
                                                   
 ? 
-[2]
+
+Underfull \vbox (badness 7796) has occurred while \output is active []
+
+ [3]
 
 LaTeX Warning: File `figures/poisson-regression.png' not found on input line 17
-7.
+2.
 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:177: Package pdftex.def Error: File `figures
+./AM_207_Write-Up_XW_SamKim_GH.tex:172: Package pdftex.def Error: File `figures
 /poisson-regression.png' not found.
 
 See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.177 ...extwidth]{figures/poisson-regression.png}
+l.172 ...extwidth]{figures/poisson-regression.png}
                                                   
 ? 
-
-Underfull \vbox (badness 3354) has occurred while \output is active []
-
- [3]
 [4]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 206.
 
-LaTeX Warning: Citation `Menger' on page 5 undefined on input line 196.
-
-
-LaTeX Warning: Citation `Winston' on page 5 undefined on input line 196.
-
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 211.
-
-(/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/omsptm.fd
+ (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 211.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 206.
 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:226: LaTeX Error: File `figures/routing-vani
+./AM_207_Write-Up_XW_SamKim_GH.tex:221: LaTeX Error: File `figures/routing-vani
 lla-tsp' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.226 ...=\textwidth]{figures/routing-vanilla-tsp}
+l.221 ...=\textwidth]{figures/routing-vanilla-tsp}
                                                   
 ? 
-[5]
+[5] [6]
 
-LaTeX Warning: Citation `Murphy' on page 6 undefined on input line 267.
-
-[6]
-
-./AM_207_Write-Up_XW_SamKim_GH.tex:287: LaTeX Error: File `figures/routing-relo
+./AM_207_Write-Up_XW_SamKim_GH.tex:282: LaTeX Error: File `figures/routing-relo
 ading' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.287 ...th=\textwidth]{figures/routing-reloading}
+l.282 ...th=\textwidth]{figures/routing-reloading}
                                                   
 ? 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:294: LaTeX Error: File `figures/sorties-loss
+./AM_207_Write-Up_XW_SamKim_GH.tex:289: LaTeX Error: File `figures/sorties-loss
 ' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.294 ...s[width=\textwidth]{figures/sorties-loss}
+l.289 ...s[width=\textwidth]{figures/sorties-loss}
                                                   
 ? 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:306: LaTeX Error: File `figures/sorties-5000
+./AM_207_Write-Up_XW_SamKim_GH.tex:301: LaTeX Error: File `figures/sorties-5000
 ' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.306 ...s[width=\textwidth]{figures/sorties-5000}
+l.301 ...s[width=\textwidth]{figures/sorties-5000}
                                                   
 ? 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:310: LaTeX Error: File `figures/sorties-2000
+./AM_207_Write-Up_XW_SamKim_GH.tex:305: LaTeX Error: File `figures/sorties-2000
 0' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.310 ...[width=\textwidth]{figures/sorties-20000}
+l.305 ...[width=\textwidth]{figures/sorties-20000}
                                                   
 ? 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:315: LaTeX Error: File `figures/sorties-1000
+./AM_207_Write-Up_XW_SamKim_GH.tex:310: LaTeX Error: File `figures/sorties-1000
 00' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.315 ...h=0.75\textwidth]{figures/sorties-100000}
+l.310 ...h=0.75\textwidth]{figures/sorties-100000}
                                                   
 ? 
 
-Overfull \hbox (1.90002pt too wide) in paragraph at lines 304--318
+Overfull \hbox (1.90002pt too wide) in paragraph at lines 299--313
  [][] [] 
  []
 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:330: LaTeX Error: File `figures/routing-relo
+./AM_207_Write-Up_XW_SamKim_GH.tex:325: LaTeX Error: File `figures/routing-relo
 ading-hq-optimal' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.330 ...th]{figures/routing-reloading-hq-optimal}
+l.325 ...th]{figures/routing-reloading-hq-optimal}
                                                   
 ? 
 
-./AM_207_Write-Up_XW_SamKim_GH.tex:336: LaTeX Error: File `figures/comparative-
+./AM_207_Write-Up_XW_SamKim_GH.tex:331: LaTeX Error: File `figures/comparative-
 loss-plot' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.336 ...textwidth]{figures/comparative-loss-plot}
+l.331 ...textwidth]{figures/comparative-loss-plot}
                                                   
 ? 
-[7]
-No file AM_207_Write-Up_XW_SamKim_GH.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 350.
-[8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 350.
- (./AM_207_Write-Up_XW_SamKim_GH.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 350.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 350.
+[7] (./AM_207_Write-Up_XW_SamKim_GH.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 344.
+ [8]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 344.
+
+(./AM_207_Write-Up_XW_SamKim_GH.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 344.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 344.
 Package rerunfilecheck Info: File `AM_207_Write-Up_XW_SamKim_GH.out' has not ch
 anged.
 (rerunfilecheck)             Checksum: 22C524B10920E95F84A4CE2EDB8F7B9B;986.
@@ -704,16 +665,19 @@ anged.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 350.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 344.
  ) 
 Here is how much of TeX's memory you used:
- 8289 strings out of 493117
- 124036 string characters out of 6135433
- 224172 words of memory out of 5000000
- 11555 multiletter control sequences out of 15000+600000
+ 8315 strings out of 493117
+ 124482 string characters out of 6135433
+ 222517 words of memory out of 5000000
+ 11567 multiletter control sequences out of 15000+600000
  28933 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,10n,92p,987b,524s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 53i,10n,92p,1302b,524s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
 xlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texl
@@ -735,10 +699,10 @@ fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/ty
 pe1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8
 a.pfb>
-Output written on AM_207_Write-Up_XW_SamKim_GH.pdf (8 pages, 207083 bytes).
+Output written on AM_207_Write-Up_XW_SamKim_GH.pdf (8 pages, 4032640 bytes).
 PDF statistics:
- 218 PDF objects out of 1000 (max. 8388607)
- 186 compressed objects within 2 object streams
- 36 named destinations out of 1000 (max. 500000)
- 105 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 247 PDF objects out of 1000 (max. 8388607)
+ 211 compressed objects within 3 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 115 words of extra memory for PDF output out of 10000 (max. 10000000)
 

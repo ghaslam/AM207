@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: AM_207_Write-Up_XW_SamKim_GH.aux
+The style file: ieeetr.bst
+Database file #1: Write-up_Ref.bib
+Warning--empty author in DrivenData2015
+Warning--empty title in DrivenData2015
+Warning--empty author in Taarifa2015
+Warning--empty title in Taarifa2015
+Warning--empty author in ACLED
+You've used 11 entries,
+            1876 wiz_defined-function locations,
+            545 strings with 4720 characters,
+and the built_in function-call counts, 1821 in all, are:
+= -- 178
+> -- 39
+< -- 0
++ -- 20
+- -- 9
+* -- 116
+:= -- 268
+add.period$ -- 14
+call.type$ -- 11
+change.case$ -- 6
+chr.to.int$ -- 0
+cite$ -- 16
+duplicate$ -- 114
+empty$ -- 200
+format.name$ -- 9
+if$ -- 446
+int.to.chr$ -- 0
+int.to.str$ -- 11
+missing$ -- 11
+newline$ -- 39
+num.names$ -- 8
+pop$ -- 37
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 55
+stack$ -- 0
+substring$ -- 49
+swap$ -- 34
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 5
+while$ -- 13
+width$ -- 13
+write$ -- 99
+(There were 5 warnings)
