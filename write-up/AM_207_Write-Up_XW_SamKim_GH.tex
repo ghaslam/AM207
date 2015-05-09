@@ -133,6 +133,30 @@ y_i =
 
 Many of the data features are categorical data that do not have any numerical interpretation, so we cannot convert them the same way that we converted our label. For example, the "installer" feature has labels such as "UNICEF," "Roman," and "Artisan." To deal with these, we use one-of-k representation in which we add a new feature column for every unique value. For example, we would add the columns "installer=UNICEF," "installer=Roman," and "installer=Artisan." The "installer=UNICEF" would be 1 if that data's "installer" was "UNICEF," and 0 otherwise. So if there are $k$ unique values for a particular categorical feature, then for each data point, we add on a vector of length $k$ which has a single 1 and $k-1$ 0s.
 
+\subsection{The model}
+
+We model $y_i$ using a logistic function that constrains the range to $0 < y_i < 1$, and the parameter for the logistic function is controlled by the features and weights, which are also parameters that we need to calculate. Our model comes from the assumption that there are certain factors impacting decay rate, and so the functionality is dependent on this decay rate.
+We then select features from the data which we have a prior belief to have a strong influence on functionality, choose priors on their distributions and construct a Metropolis-Hastings Sampler to select the optimum value for each parameter. New predictions of functionality can then be made from this model.
+
+We also add on a term for noise, $\epsilon_i$, which we assume is Gaussian noise controlled by the standard deviation $\sigma$.
+
+\begin{gather*}
+y_i = \frac{1}{1+e^{\alpha_i}}+\sigma\epsilon_i \\
+\alpha_i = \beta_0 + \beta_1 x_{i,1} + \beta_2 x_{i,2} + ... + \beta_n x_{i,n}
+\end{gather*}
+
+There are $n$ features and $n+2$ parameters ($n+1$ $\beta$s and $\sigma$). The parameters are found by sampling from the posterior:
+
+\begin{equation*}
+p(Y,\Theta)=p(Y|\Theta)p(\Theta)
+\end{equation*}
+
+\section{Prediction Results}
+
+\subsection{Something}
+\subsection{Feature selection?}
+\subsection{Comparison to machine learning approaches}
+
 \section{Modeling civil conflict}
 
 \subsection{Events in space}
