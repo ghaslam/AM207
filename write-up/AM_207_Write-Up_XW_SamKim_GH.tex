@@ -157,6 +157,10 @@ p(Y,\Theta)=p(Y|\Theta)p(\Theta)
 \subsection{Feature selection?}
 \subsection{Comparison to machine learning approaches}
 
+The k-Nearestt Neighbors algorithm (also known as the k-NN algorithm) is a machine learning algorithm that can be applied to clssification problems. There is no training aspect to the algorithm. Predictions are made by taking the $k$ nearest data points to the desired data point in feature space, and taking the majority of their labels. The labels can also be weighted by $1/d$, where $d$ is the distance from the desired data point to the labeled data point. We apply the k-NN algorithm using only the longitude and latitude data, so we are picking the geographically nearest neighbors. Accuracy in cross-validation is shown in the below figure as a function of $k$. We see that it reaches 63\% prediction accuracy.
+
+\includegraphics[width=8cm]{figures/kNN_accuracy_vs_K.png}
+
 \section{Modeling civil conflict}
 
 \subsection{Events in space}
