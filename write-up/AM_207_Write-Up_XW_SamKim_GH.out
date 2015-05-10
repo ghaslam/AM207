@@ -3,10 +3,10 @@
 \BOOKMARK [1][-]{section.3}{Modeling water well functionality}{}% 3
 \BOOKMARK [2][-]{subsection.3.1}{Model Classification}{section.3}% 4
 \BOOKMARK [2][-]{subsection.3.2}{Categorical data}{section.3}% 5
-\BOOKMARK [1][-]{section.4}{Modeling civil conflict}{}% 6
-\BOOKMARK [2][-]{subsection.4.1}{Events in space}{section.4}% 7
-\BOOKMARK [2][-]{subsection.4.2}{Events in time}{section.4}% 8
-\BOOKMARK [2][-]{subsection.4.3}{Putting together the spatial and temporal}{section.4}% 9
+\BOOKMARK [2][-]{subsection.3.3}{The model}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Prediction Results}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Results}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Comparison to machine learning approaches}{section.4}% 9
 \BOOKMARK [1][-]{section.5}{Optimizing humanitarian aid delivery}{}% 10
 \BOOKMARK [2][-]{subsection.5.1}{The traveling salesman problem}{section.5}% 11
 \BOOKMARK [2][-]{subsection.5.2}{Packing the aid truck \204 the Knapsack Problem}{section.5}% 12

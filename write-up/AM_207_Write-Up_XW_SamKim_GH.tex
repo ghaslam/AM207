@@ -1,4 +1,5 @@
 \documentclass{article} % For LaTeX2e
+\usepackage{multicol}
 \usepackage{nips13submit_e,times}
 \usepackage{hyperref}
 \usepackage{url}
@@ -12,6 +13,7 @@
 \usepackage{fancyvrb}
 \usepackage{booktabs}
 \usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage[margin=1in]{geometry}
 % \documentstyle[nips13submit_09,times,art10]{article} % For LaTeX 2.09
 \bibliographystyle{ieeetr}
 
@@ -46,11 +48,14 @@ Cambridge, MA 02138 \\
 \begin{document}
 
 
+
 \maketitle
 
 \begin{abstract}
 We describe MCMC techniques to model the functionality of water pumps in Tanzania and suggest an optimised route for their maintenance. Using field data describing various attributes of each pump, such as construction year, installer, and location, we describe a method to predict the current status of the pump from a set of three possibilities (functioning, functioning needs repair, and not functioning). We also optimize the route that a maintenance crew could take to repair damaged pumps in a version of the well--known, NP--hard, traveling salesman problem. We find acceptable solutions using stochastic metaheuristics. Code and more information are available at \url{http://ghaslam.github.io/AM207/}.
 \end{abstract}
+
+\begin{multicols}{2}
 
 \section{Introduction}
 
@@ -62,7 +67,7 @@ We aim to use Bayesian Methods to assign one of three categorical labels indicat
 
 The data for this project was provided as part of a data science challenge run by DrivenData.org \cite{DrivenData2015}. DrivenData aims to encourage data scientists from around the world to take part in online competitions to develop predictive statistical models that can address important problems in the fields of health, international development, and the environment. The data for the Tanzanian water pump competition was aggregated from the Tanzanian Ministry of Water by Taarifa, an open source platform for tracking infrastructure related issues \cite{Taarifa2015}.  The dataset contains records of 59,400 water pumps with information on a range of 39 parameters, such as pump construction year, installer, type of pump, water quality, population around the well, cost of water, quantity and others. These include a mix of categorical and numerical data, and there are also many missing values. Each pump is assigned a unique ID as well as precise coordinates for its locations. A subset of the parameters are shown in Table 1. The final column in Table 1 indicates the current status of the pump which the model will attempt to predict. The optimisation algorithm will then attempt to find the route that reaches the damaged pumps in the s
 
-\begin{table}[H]
+\begin{table}
 \caption{Sample of the DrivenData Tanzania water wells dataset}
 \centering
 \resizebox{\columnwidth}{!}{%
@@ -83,7 +88,7 @@ ID &         Installer        &  GPS Height & Longitude & Latitude &   Construct
 
 In addition to the parameters given in the original dataset, we calculate some additional parameters such as age (based on the construction year), and relative remoteness (based on the average distance of the 5 nearest neighbours). Figure \ref{fig:map-phys} shows a map of the physical geography of Tanzania and another showing the locations of the pumps. The high density of pumps appears as a solid blue colour but actually represents many individual points.
 
-\begin{figure}
+\begin{figure*}
   \centering
   \begin{subfigure}[b]{0.5\textwidth}
     \centering
@@ -98,7 +103,7 @@ In addition to the parameters given in the original dataset, we calculate some a
   \end{subfigure}
   \caption{Geography of Tanzania and distribution of water pumps.}
   \label{fig:map}
-\end{figure}
+\end{figure*}
 
 \section{Modeling water well functionality}
 
@@ -153,51 +158,42 @@ p(Y,\Theta)=p(Y|\Theta)p(\Theta)
 
 \section{Prediction Results}
 
-\subsection{Something}
-\subsection{Feature selection?}
+\subsection{Results}
+
+\begin{figure*}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/trace_block}
+		\caption{Blockwise updating}
+		\label{fig:trace_block}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/trace_component}
+		\caption{Componentwise updating}
+		\label{fig:trace_comp}
+	\end{subfigure}
+	\caption{Traceplot of model parameters, using MH sampler.}
+	\label{fig:trace}
+\end{figure*}
+
+Figure~\ref{fig:trace} shows the trace plot of the model parameters with blockwise updating and componentwise updating. These are after the burn-in period. Blockwise updating has an acceptance rate of nearly 0 because we are updating 8 parameters at a time. Componentwise updating has a much higher acceptance rate, although at a huge time cost.
+
+The parameters chosen are "longitude," "latitude," "age" (2015-"construction\_year"), "gps\_height," "quantity=dry," and "population."
+
+We see that $\beta_5$ has significant predictive power since this is the farthest from 0. This corresponds to the "quantity=dry" feature. $\beta_0$ is the constant offset, which we would expect to be non-zero. 
+
+By fine-tuning the step parameters and carefully choosing features, we reach a cross-validation prediction accuracy of 60.6\%.
+
 \subsection{Comparison to machine learning approaches}
 
-The k-Nearestt Neighbors algorithm (also known as the k-NN algorithm) is a machine learning algorithm that can be applied to clssification problems. There is no training aspect to the algorithm. Predictions are made by taking the $k$ nearest data points to the desired data point in feature space, and taking the majority of their labels. The labels can also be weighted by $1/d$, where $d$ is the distance from the desired data point to the labeled data point. We apply the k-NN algorithm using only the longitude and latitude data, so we are picking the geographically nearest neighbors. Accuracy in cross-validation is shown in the below figure as a function of $k$. We see that it reaches 63\% prediction accuracy.
+Here we compare our methods with other common machine learning methods.
+
+The k-Nearest Neighbors algorithm (also known as the k-NN algorithm) is a machine learning algorithm that can be applied to classification problems. There is no training aspect to the algorithm. Predictions are made by taking the $k$ nearest data points to the desired data point in feature space, and taking the majority of their labels. The labels can also be weighted by $1/d$, where $d$ is the distance from the desired data point to the labeled data point. We apply the k-NN algorithm using only the longitude and latitude data, so we are picking the geographically nearest neighbors. Accuracy in cross-validation is shown in the below figure as a function of $k$. We see that it reaches 69\% prediction accuracy.
 
 \includegraphics[width=8cm]{figures/kNN_accuracy_vs_K.png}
 
-\section{Modeling civil conflict}
+Decision trees are a machine learning method in which a tree of rules is built. One traverses down the tree, and each node represents a rule based on the data's features. The leaves are the final decision. The nodes are built based on which features have the most predictive power for classification. Random forests are an extension of decision trees in which many trees are trained, and stochasticity is introduced to make the trees different, which decreases bias. We show in randomforest\_explore.ipynb that random forests on a small subset of features can reach an accuracy of 79\%. Further experimentation and more sophisticated feature extraction can reach prediction accuracies of 83\% on this data.
 
-\subsection{Events in space}
-
-The violence and civil conflict events described in the ACLED dataset are coded with both a latitude and a longitude. One assumption we make is that these events are distributed due to underlying causes such as population centers, road access, historical land ownership, and other features that make conflicts more or less likely. It is difficult to directly create a generative model for these probabilities, so we will make the further assumption that the distribution of the data already incorporates and is representative of these factors. In effect, we treat the entire country of Uganda as a probability distribution from which geospatial conflict events could be sampled.  We took historical conflict location data from the entire ACLED data set and smoothed it using a Mat\'{e}rn covariance function.  Figure \ref{fig:map-smoothed} shows this smoothing applied to the same conflicts depicted in \ref{fig:map-points}.
-
-We used this smooth function as a kernel-density esitmate (KDE). This estimate (i.e., the empirical distribution of the conflict data), has a complex functional form which makes it challenging to sample from. However, for any given coordinate it is quite simple to get the probability of an event. Given this property of our KDE, we can apply Monte Carlo sampling techniques to generate samples from this probability distribution. Visualizing the distribution, we can see that it is multi-modal with regions of low density between the modes. Because of these properties, we opted to use slice sampling to generate draws from the distribution. Figure \ref{fig:sampled-conflicts} shows the first 1,000 samples from this probability distribution.\footnote{We throw away samples that occur over water or outside of country boundaries.} Figure \ref{fig:histogram} shows the distribution of the samples as a two-dimensional histogram.
-
-When slice sampling, there are a number of parameter choices that are imporant. We want to choose our rectangle widths, burn-in, and thinning parameters appropriately. In testing, a thinning value of 10 reduced autocorrelation to less than 0.1 at a time lag of 1. We can see this result in Figure . We used the Gelman-Rubin potential scale reduction factor\cite{Gelman-Rubin} to determine if we were observing favorable mixing. Generally, a value less than 1.1 indicates good mixing. In both of our dimensions, the Gelman-Rubin statistic was less than this threshold. We also calculated the Geweke statistic, which is used to indicate convergence. A value less than 2 indicates convergence and for our draws, this statistic was $\ll$ 1. We can also examine convergence by looking at the trace plots for the samples. As we see in Figure \ref{fig:trace} these appear stationary.
-
-\subsection{Events in time}
-As a modeling assumption, we separate the dimensions of space and time as being independent. To model events in time across the country, we use an autoregressive Poisson GLM. While standard autoregressive models create a linear relation between a future value and a previous value, the Poisson GLM permits a linear relation between previous data and the mean of a Poisson distribution. This will allow us to retain the probabilistic interpretation of the events in time.
-
-In order to model events using a Poisson distribution, we must discretize our time dimension. We opted for month-long increments. The thinking behind this decision is that we want to use sample draws to run our aid optimizations. If a model like this were to be used in planning for future conflicts, having a month-long window for a plan seems like a good balance between precision and logistic concerns.
-
-The Autoregressive Poisson GLM model can be described as a log-linear relationship between the number of events of political violence and the mean of a Poisson distribution. We start with a timeseries, $\mathbf{X} = \{x_0, x_1,\hdots, x_N\}$, of $N$ counts of events at each discretized point in time. We also start with a lag $\Lambda$ that is the number of previous time steps to include in the model. We can now describe our features at time $t$ as the $\Lambda$ previous time steps: $\mathbf{X_{t, \Lambda}} = \{x_{t-\Lambda}, x_{t-\Lambda-1},\hdots, x_t\}$.
-
-The linear predictor in the autoregressive model at a time step is $\eta_t$, and it is related to the mean of the Poisson distribution, $\mu_t$, by its canonical link function, $\log$.
-
-\begin{align*}
-\eta_t &= \mathbf{X}_{t, \Lambda}'\beta. \\
-\mu_t &= \log(\eta_t) = \log(\mathbf{X}_{t, \Lambda}'\beta) \\
-\end{align*}
-
-Finally, the only parameter to the Poisson distribution is this mean, so the distribution of counts, $k$, at some time t+1 can be given by:
-
-\begin{align*}
-p(k | \mu_t) &= \frac{\mu_t^k}{k!}e^{-\mu_t} \\
-p(k | \mathbf{X}_{t, \Lambda}, \beta) &= \frac{\log(\mathbf{X}_{t, \Lambda}'\beta)^k}{k!}e^{-\log(\mathbf{X}_{t, \Lambda}'\beta)} 
-\end{align*}
-
-We can fit this model by using Fisher scoring to calculate $\beta_\mathrm{MLE}$, the coefficients of the model. Figure \ref{fig:poisson} shows this model as compared to actual rates of conflict incidence.
-
-
-\subsection{Putting together the spatial and temporal}
-
-We can now use our draws over space and time to generate a simulation of future conflicts in Uganda. These simulated scenarios will serve as the basis of our aid delivery optimization. The combination of modeling conflict events in space and time along with optimizing aid delivery could prove helpful to organizations such as the Red Cross in ordering supplies, allocating staff and volunteers, and developing infrastructure.
+Bayesian modeling is probably not the best method to use for this type of problem. It assumes that the classification can be described by some sort of model, and we would have to guess this model ahead of time. Decision trees and random forests do not assume any sort of relation between the variable features and the labels, and merely seek out the variable features with the highest predictive power. Second, there are a lot of parameters in the MH sampler that need to be tuned, including initial guesses for the parameters and step sizes. Additionally, Bayesian modeling takes extremely long to train, on the order of hours on a laptop, assuming that the initial guesses for the parameters and step sizes are set correctly. Training k-NN and random forests take on the order of minutes.
 
 \section{Optimizing humanitarian aid delivery}
 
@@ -305,4 +301,5 @@ In each part of this problem, analytical solutions either do not exist (e.g. in 
 
 \bibliography{Write-up_Ref}
 
+\end{multicols}
 \end{document}
