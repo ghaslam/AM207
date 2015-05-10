@@ -195,105 +195,66 @@ Decision trees are a machine learning method in which a tree of rules is built. 
 
 Bayesian modeling is probably not the best method to use for this type of problem. It assumes that the classification can be described by some sort of model, and we would have to guess this model ahead of time. Decision trees and random forests do not assume any sort of relation between the variable features and the labels, and merely seek out the variable features with the highest predictive power. Second, there are a lot of parameters in the MH sampler that need to be tuned, including initial guesses for the parameters and step sizes. Additionally, Bayesian modeling takes extremely long to train, on the order of hours on a laptop, assuming that the initial guesses for the parameters and step sizes are set correctly. Training k-NN and random forests take on the order of minutes.
 
-\section{Optimizing humanitarian aid delivery}
+\section{Optimizing maintenance crew route}
 
-In the second part of this project, we use the temporal/geospatial conflict occurence model in the first section as both inspiration for the aid delivery analogy and also as a source of randomly sampled data points representing geospatially distributed conflicts.
+In the second part of this project, we aim to suggest an optimised route by which a maintenance crew could visit the damaged pumps. The choice of locations can either be taken from the originally labeled pumps or based on the outputs of our model's labels. 
 
 \subsection{The traveling salesman problem}
 
-One question of particular interest is how to route emergency aid
-to locations where it is needed.  For concreteness, let's postulate a Red Cross medical or food supply caravan that originates from the organization's in-country headquarters. This caravan wishes to visit all $n$ emergent locations in order to
-deliver needed supplies. They wish to do so in the most efficient manner possible.
-
-This is the traveling salesman problem (TSP), an optimization problem that is quite well known. It was first described in 1932 by Karl Menger (shortly after his year here at Harvard as a visiting lecturer) and has been studied extensively ever since.\cite{Menger} Here is the traditional convex optimization specification of the problem:\cite{Winston}
+Having hopefully identified a method for accurately predicting which pumps will fail, we can imagine that the Tanzanian Ministry of Water will want to task a maintenance crew with visiting each of these locations. We may also assume that the maintenance crew are based in the commercial capital of Dar Es Salaam. The crew wishes to visit all $N$ locations in as efficient manner as possible. This problem is equivalent to the traveling salesman problem (TSP), first described in 1932 by Karl Menger \cite{Menger}. A compact mathematical formulation of the problem is given by Miller et. al. \cite{Miller1960} as follows:
 
 
 \begin{align*}
-\min &\sum_{i=0}^n \sum_{j\ne i,j=0}^nc_{ij}x_{ij} &&  \\
-\mathrm{s.t.} & \\
+\textrm{Find variables }& X_{ij}  \textrm{ and } U_i i,j = 1, 2, \cdots , n \textrm{ that minimize}:\\
+Z &= \min \sum_{i=0}^n \sum_{j\ne i,j=0}^n C_{ij} X_{ij}\\
+\end{align*}
+
+\begin{align*}
+\textrm{subject to} & \\
+	& \sum_{i=1}^n X_{ij} = 1 && j = 1, 2 , \cdots, n \\
+	& \sum_{j=1}^n X_{ij} = 1 && i = 1, 2, \cdots, n \\
+	&U_i - U_j + nX_{ij} \le n-1 && i, j = 2, \cdots, n i\ne j \\
 	& x_{ij} \in \{0, 1\} && i,j=0, \cdots, n \\
-	& \sum_{i=0,i\ne j}^n x_{ij} = 1 && j=0, \cdots, n \\
-	& \sum_{j=0,j\ne i}^n x_{ij} = 1 && i=0, \cdots, n \\
-	&u_i-u_j +nx_{ij} \le n-1 && 1 \le i \ne j \le n
 \end{align*}
 
-As is clear from the constraints, this is an integer linear program (ILP) where:
+The optimal solution is subject to the following constraints:
 
 \begin{itemize}
-  \item $x_{ij}$ is a binary decision variable indicating whether we go from location $i$ to location $j$.
-  \item $c_{ij}$ is the distance\footnote{In our application, we deal with geospatial data on a large enough scale that the Euclidean distance is actually very imprecise. In order to model distances over the planet's surface, we use the Haversine formula.} between location $i$ and location $j$.
+  \item $X_{ij}$ is a binary decision variable indicating whether to accept a move from location $i$ to location $j$.
+  \item $C_{ij}$ is the distance between location $i$ and location $j$.
   \item The objective function is the sum of the distances for routes that we decide to take.
-  \item The final constraint ensures that all locations are visited once and only once.
+  \item Each location is visited once and only once.
 \end{itemize}
 
-The problem, of course, is that brute force solution of the TSP is $\mathcal{O}$$(n!)$. Traditional, deterministic
-algorithm approaches such as branch-and-bound or branch-and-cut are still impractical for larger numbers of nodes.
-In many cases, exhaustive search for global optimality is not even particularly helpful as long as the solution
-found is good enough. We will use simulated annealing (SA) to get acceptable solutions to the TSP.
+The difficulty with solving the TSP is that for large numbers of locations, it becomes impossible to test all possible routes as the problem has $\mathcal{O}$$(n!)$ complexity and is classified as NP-hard. Therefore, it can be sufficient to find an answer that is 'good enough' even if it is not globally optimal. 
 
-Figure \ref{fig:routing-vanilla-tsp} shows a sample draw of conflict data (the blue points), and a near-optimal TSP route found through 50,000 iterations of simulated annealing.
+Figure \ref{fig:TSP} shows the effect of simulated annealing on reducing the total distance travelled by the maintenance crew and suggest a near-optimal route between the pumps in need of repair.
 
-\subsection{Packing the aid truck --- the Knapsack Problem}
+\begin{figure*}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/Plain-TSP-Trace}
+		\caption{Decrease in distance due to annealing}
+		\label{fig:Plain-TSP-Trace}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/Optimised-Route}
+		\caption{Optimised maintenance route}
+		\label{fig:trace_comp}
+	\end{subfigure}
+	\caption{Simulated annealing for travelling salesman.}
+	\label{fig:TSP}
+\end{figure*}
 
-We extend the TSP into a multi-objective optimization problem
-where \emph{the contents of the aid trucks} also have an optimization component. Therein lies
-the knapsack problem: subject to a volume or weight constraint, and given that different locations
-might have very different needs such as food, vaccinations, or emergent medical supplies, \emph{which
-supplies do we pack on the trucks}?
-
-Here's the unbounded\footnote{Often, this problem is formulated such that you can only bring one of each item, but that does not make sense in our application. Rather, we want to be able to bring as many types of each type of aid as we think necessary, and we'll assume that as many as desired are available to load on the trucks before starting out from HQ.} version of the knapsack problem:
-
-\begin{align*}
-\max &\sum_{i=1}^n v_i x_i &&  \\
-\mathrm{s.t.} & \\
-    & x_i \in \mathbb{Z} \\
-    & x_i \geq 0 \\
-	& \sum_{i=1}^n w_ix_i \leq W
-\end{align*}
-
-In this formulation:
-
+\subsection{Modifications}
 \begin{itemize}
-  \item $x_{i}$ is a zero or positive integer decision variable indicating how many units of item $i$
-        we load on the truck.
-  \item $v_i$ is the utility we get from bringing along item $i$.
-  \item $w_i$ is the weight of item $i$.
-  \item $W$ is the maximum weight the truck can carry.
+  \item Fixing the depot
+  \item Multiple crews
+  \item Comparison with Genetic Algorithm
+  \item Knapsack
+  \item Weighting more remote pumps
 \end{itemize}
 
-\subsection{A brief detour for modeling assumptions}
-
-Before we can optimize this aid delivery mechanism, we will need to decide a way to model humanitarian aid needs at a given conflict.
-
-Let us assume that there are $K$ distinct types of humanitarian aid to be delivered. (Without loss of generality, we will use three categories for all of our examples --- perhaps we can think of them food aid, first aid supplies, and medicines for concreteness.) We can model each conflict's aid needs as
-
-$$\boldsymbol x \sim \mathrm{Dir}(\boldsymbol \alpha)$$
-
-where $\boldsymbol \alpha$ parameterizes the distribution to generate vectors of length $K$ representing the relative proportions of needs.\cite{Murphy} For example, in our three category example we might draw the vector $(0.11,\,0.66,\,0.23)$ for a certain conflict, meaning that 11\% of the aid needed at this conflict is food aid, 66\% is first aid supplies, and 23\% is medicines. Now that we know the proportions for the given conflict, how might we turn this unitless vector into absolute amounts?
-
-For that reason, let's assign each conflict a scaled size $s \in [1, 10]$ based on the number of casualties (a proxy for the severity of the conflict). We can use this size scalar to turn our proportion vector into a vector of absolute needs.
-
-It should be noted that \textbf{both of these modeling methods for proportions and size are ``plug-and-play''} --- because of purposely designed loose coupling in our model, these methods could trivially be replaced by a different method of calculating or predicting the needs of each conflict. For example, if an independent model was used to calculate each of $K$ needs based on the features of each conflict, those quantities could easily be plugged in to this model. Ultimately, the only quantities that our TSP/Knapsack model needs is an $n \times K$ matrix of aid needs for $n$ cities and $K$ categories of aid.
-
-\subsection{A new objective function to integrate TSP and Knapsack}
-
-For the vanilla TSP, we simply try to minimize the total distance. Now that we are adding a new objective, we will need to integrate the two into a coherent \textbf{loss function}.  Here is the function we will actually try to minimize in the combined TSP/Knapsack:
-
-$$L(\boldsymbol x) = \text{total distance} + \text{sum of squared aid shortfalls}$$
-
-The effect of squaring aid shortfalls acts as a weight, causing greater importance to be placed on minimizing this aspect of the problem first. Proposals wherein aid shortfalls occur are heavily penalized. As we will see in later graphs, once the SA algorithm is able to avoid all shortfalls and the concurrent massive loss function penalties, a much slower descent begins to take place wherein the distance is slowly optimized. See figure \ref{fig:sorties-loss} for a depiction of this phenomenon.
-
-\subsection{Implementing the Knapsack aspect}
-
-Figure \ref{fig:routing-reloading} shows the same draw of cities as in figure \ref{fig:routing-vanilla-tsp}, this time factoring in limited carrying capacity for aid supplies on the aid delivery mechanism and using our new loss function. As we can see, the huge penalty incurred when supplies run out quickly induces the simulated annealing algorithm to converge on a solution with multiple stops at HQ to reload.
-
-
-Figure \ref{fig:sorties} uses some uniformly distributed points on the $[0,50]$ plane to demonstrate how the proposed TSP/Knapsack routes converge as the number of iterations increases.
-
-
-\subsection{Finding the optimal site for the resupply location}
-
-Our initial assumption was that the HQ was located in the capital city of Kampala. However, we should ask whether our HQ could be more conveniently located. We can answer this question by treating the reload location as another parameter and continuing to sample HQ locations using SA. Figure \ref{fig:routing-reloading-hq-optimal} shows the TSP/Knapsack optimized once again, this time using a the optimal HQ location, while \ref{fig:comparative-loss-plot} compares the loss function as each method converges to its best possible configuration.
+Interesting extensions to the problem are described in \cite{Gavish1978}.
 
 \section*{Conclusions}
 

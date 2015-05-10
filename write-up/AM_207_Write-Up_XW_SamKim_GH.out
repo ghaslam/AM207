@@ -7,10 +7,6 @@
 \BOOKMARK [1][-]{section.4}{Prediction Results}{}% 7
 \BOOKMARK [2][-]{subsection.4.1}{Results}{section.4}% 8
 \BOOKMARK [2][-]{subsection.4.2}{Comparison to machine learning approaches}{section.4}% 9
-\BOOKMARK [1][-]{section.5}{Optimizing humanitarian aid delivery}{}% 10
+\BOOKMARK [1][-]{section.5}{Optimizing maintenance crew route}{}% 10
 \BOOKMARK [2][-]{subsection.5.1}{The traveling salesman problem}{section.5}% 11
-\BOOKMARK [2][-]{subsection.5.2}{Packing the aid truck \204 the Knapsack Problem}{section.5}% 12
-\BOOKMARK [2][-]{subsection.5.3}{A brief detour for modeling assumptions}{section.5}% 13
-\BOOKMARK [2][-]{subsection.5.4}{A new objective function to integrate TSP and Knapsack}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.5}{Implementing the Knapsack aspect}{section.5}% 15
-\BOOKMARK [2][-]{subsection.5.6}{Finding the optimal site for the resupply location}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.2}{Modifications}{section.5}% 12
