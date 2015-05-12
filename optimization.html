@@ -85,142 +85,45 @@
                     
                     <p>The problem, of course, is that brute force solution of the TSP is $\mathcal{O}$$(n!)$. Traditional, deterministic algorithm approaches such as branch-and-bound or branch-and-cut are still impractical for larger numbers of nodes. In many cases, exhaustive search for global optimality is not even particularly helpful as long as the solution found is good enough. We will use simulated annealing (SA) to get acceptable solutions to the TSP.</p>
                     
-                    <p>Figure <a href="#8">8</a> shows a sample draw of conflict data (the blue points), and a near-optimal TSP route found through 50,000 iterations of simulated annealing.</p>
+                    <p>Figures <a href="#1">1</a> and <a href="#2">2</a> show the effect of simulated annealing on reducing the total distance travelled by the maintenance crew and suggest a near-optimal route between the pumps in need of repair. Due to the large number of locations, only a subset are shown in order to make viewing easier. The depot in Dar Es Salaam is highlighted in red. The trace plot shown in Figure <a href="#1">1</a> shows that the SA algorithm has approached a stable route distance which is significantly shorter than the original random route..</p>
                     
                     <p></p>
                     <div class="panel panel-info">
-                    <a name="8"></a>
-                    <div class="panel-heading">Figure 8</div>
+                    <a name="1"></a>
+                    <div class="panel-heading">Figure 1</div>
                     <div class="panel-body">
-                    <img src="img/routing-vanilla-tsp.png" width="100%" max-width="600" />
+                    <img src="img/Plain-TSP-Trace.png" width="100%" max-width="600" />
                     </div>
-                    <div class="panel-footer">Visiting all conflicts without reloading.</div>
-                    </div>
-                    
-                    <h4>Packing the aid truck &mdash; the Knapsack Problem</h4>
-                    
-                    <p>We extend the TSP into a multi-objective optimization problem where the contents of the aid trucks also have an optimization component. Therein lies the knapsack problem: subject to a volume or weight constraint, and given that different locations might have very different needs such as food, vaccinations, or emergent medical supplies, which supplies do we pack on the trucks?</p>
-                    
-                    <p>Often, this problem is formulated such that you can only bring one of each item, but that does not make sense in our application. Rather, we want to be able to bring as many types of each type of aid as we think necessary, and we’ll assume that as many as desired are available to load on the trucks before starting out from HQ.  Here’s the unbounded version of the knapsack problem:</p>
-                    
-                    $$\begin{aligned}
-                    \max &\sum_{i=1}^n v_i x_i &&  \\
-                    \mathrm{s.t.} & \\
-                    & x_i \in \mathbb{Z} \\
-                    & x_i \geq 0 \\
-                    & \sum_{i=1}^n w_ix_i \leq W\end{aligned}$$
-                    
-                    <p>In this formulation:</p>
-                    
-                    <ul>
-                    <li>$x_{i}$ is a zero or positive integer decision variable indicating how many units of item $i$ we load on the truck.</li>
-                    <li>$v_i$ is the utility we get from bringing along item $i$.</li>
-                    <li>$w_i$ is the weight of item $i$.</li>
-                    <li>$W$ is the maximum weight the truck can carry.</li>
-                    </ul>
-                    
-                    <h4>A brief detour for modeling assumptions</h4>
-                    
-                    <p>Before we can optimize this aid delivery mechanism, we will need to decide a way to model humanitarian aid needs at a given conflict.</p>
-                    
-                    <p>Let us assume that there are $K$ distinct types of humanitarian aid to be delivered. (Without loss of generality, we will use three categories for all of our examples &mdash; perhaps we can think of them food aid, first aid supplies, and medicines for concreteness.) We can model each conflict’s aid needs as</p>
-                    
-                    $$\boldsymbol x \sim \mathrm{Dir}(\boldsymbol \alpha)$$
-                    
-                    <p>where $\boldsymbol \alpha$ parameterizes the distribution to generate vectors of length $K$ representing the relative proportions of needs. For example, in our three category example we might draw the vector $(0.11,\,0.66,\,0.23)$ for a certain conflict, meaning that 11% of the aid needed at this conflict is food aid, 66% is first aid supplies, and 23% is medicines. Now that we know the proportions for the given conflict, how might we turn this unitless vector into absolute amounts?</p>
-                    
-                    <p>For that reason, let’s assign each conflict a scaled size $s \in [1, 10]$ based on the number of casualties (a proxy for the severity of the conflict). We can use this size scalar to turn our proportion vector into a vector of absolute needs.</p>
-                    
-                    <p>It should be noted that both of these modeling methods for proportions and size are “plug-and-play” &mdash; because of purposely designed loose coupling in our model, these methods could trivially be replaced by a different method of calculating or predicting the needs of each conflict. For example, if an independent model was used to calculate each of $K$ needs based on the features of each conflict, those quantities could easily be plugged in to this model. Ultimately, the only quantities that our TSP/Knapsack model needs is an $n \times K$ matrix of aid needs for $n$ cities and $K$ categories of aid.</p>
-                    
-                    <h4>A new objective function to integrate TSP and Knapsack</h4>
-                    
-                    <p>For the vanilla TSP, we simply try to minimize the total distance. Now that we are adding a new objective, we will need to integrate the two into a coherent loss function. Here is the function we will actually try to minimize in the combined TSP/Knapsack:</p>
-                    
-                    $$L(\boldsymbol x) = \text{total distance} + \text{sum of squared aid shortfalls}$$
-                    
-                    <p>The effect of squaring aid shortfalls acts as a weight, causing greater importance to be placed on minimizing this aspect of the problem first. Proposals wherein aid shortfalls occur are heavily penalized. As we will see in later graphs, once the SA algorithm is able to avoid all shortfalls and the concurrent massive loss function penalties, a much slower descent begins to take place wherein the distance is slowly optimized. See figure <a href="#10">10</a> for a depiction of this phenomenon.</p>
-                    
-                    <h4>Implementing the Knapsack aspect</h4>
-                    
-                    <p>Figure <a href="#9">9</a> shows the same draw of cities as in figure <a href="#8">8</a>, this time factoring in limited carrying capacity for aid supplies on the aid delivery mechanism and using our new loss function. As we can see, the huge penalty incurred when supplies run out quickly induces the simulated annealing algorithm to converge on a solution with multiple stops at HQ to reload.</p>
-                    
-                    <p></p>
-                    <div class="panel panel-info">
-                        <a name="9"></a>
-                        <div class="panel-heading">Figure 9</div>
-                        <div class="panel-body">
-                            <img src="img/routing-reloading.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">Routing with reloading from capital city Kampala.</div>
+                    <div class="panel-footer">Decrease in distance due to annealing.</div>
                     </div>
                     
                     <p></p>
                     <div class="panel panel-info">
-                        <a name="10"></a>
-                        <div class="panel-heading">Figure 10</div>
-                        <div class="panel-body">
-                            <img src="img/sorties-loss.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">Loss function acceptances over 100,000 iterations.</div>
+                    <a name="2"></a>
+                    <div class="panel-heading">Figure 2</div>
+                    <div class="panel-body">
+                    <img src="img/Optimised-Route.png" width="100%" max-width="600" />
+                    </div>
+                    <div class="panel-footer">Decrease in distance due to annealing.</div>
                     </div>
                     
-                    <p>Figures <a href="#11">11</a>, <a href="#12">12</a>, and <a href="#13">13</a> use some uniformly distributed points on the $[0,50]$ plane to demonstrate how the proposed TSP/Knapsack routes converge as the number of iterations increases.</p>
+                    <h4>Modifications</h4>
+                    
+                    <p>With one maintenance crew, the total distance travelled is 41,000 km, which is obviously too much for one crew to travel. It is also important to note that we use the Haversine formula for calculating the distance between locations as the straight-line, Euclidean distance is imprecise for large distances on a sphere. An obvious extension of the problem is to imagine that instead of making a single visiting every pump, the crew make multiple trips, returning to the depot in Dar Es Salaam each time (or equivalently, that multiple crews leave and return to the depot each day). This leads to a decrease in total distance travelled from 41,000 km to 34,500 km. This problem is commonly referred to as the vehicle routing problem (VRP).</p>
+                    
+                    <p>Finally, we looked at prioritising the damaged pumps that were identified as being 'remote', with the assumption that people depending on these pumps would have fewer alternative sources nearby that they could visit if their own pump failed. We first identified the average distance from each pump to its 5 nearest neighbours using the k-dimensional tree method. We then added this weight to the cost function used by the SA algorithm. As expected, this led to a significant reorganisation of the route and an increase in the total distance travelled but with the benefit of reaching those in need more quickly.</p>
                     
                     <p></p>
                     <div class="panel panel-info">
-                        <a name="11"></a>
-                        <div class="panel-heading">Figure 11</div>
-                        <div class="panel-body">
-                            <img src="img/sorties-5000.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">After 5,000 iterations.</div>
+                    <a name="2"></a>
+                    <div class="panel-heading">Figure 2</div>
+                    <div class="panel-body">
+                    <img src="img/Optimised-Route.png" width="100%" max-width="600" />
                     </div>
-                    
-                    <p></p>
-                    <div class="panel panel-info">
-                        <a name="12"></a>
-                        <div class="panel-heading">Figure 12</div>
-                        <div class="panel-body">
-                            <img src="img/sorties-20000.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">After 20,000 iterations.</div>
+                    <div class="panel-footer">Decrease in distance due to annealing.</div>
                     </div>
-                    
-                    <p></p>
-                    <div class="panel panel-info">
-                        <a name="13"></a>
-                        <div class="panel-heading">Figure 13</div>
-                        <div class="panel-body">
-                            <img src="img/sorties-100000.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">After 100,000 iterations.</div>
-                    </div>
-                    
-                    <h4>Finding the optimal site for the resupply location</h4>
-                    
-                    <p>Our initial assumption was that the HQ was located in the capital city of Kampala. However, we should ask whether our HQ could be more conveniently located. We can answer this question by treating the reload location as another parameter and continuing to sample HQ locations using SA. Figure <a href="#14">14</a> shows the TSP/Knapsack optimized once again, this time using a the optimal HQ location, while figure <a href="#15">15</a> compares the loss function as each method converges to its best possible configuration.</p>
-                    
-                    <p></p>
-                    <div class="panel panel-info">
-                        <a name="14"></a>
-                        <div class="panel-heading">Figure 14</div>
-                        <div class="panel-body">
-                            <img src="img/routing-reloading-hq-optimal.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">Routing with reloading from optimal HQ.</div>
-                    </div>
-                    
-                    <p></p>
-                    <div class="panel panel-info">
-                        <a name="15"></a>
-                        <div class="panel-heading">Figure 15</div>
-                        <div class="panel-body">
-                            <img src="img/comparative-loss-plot.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">Example loss function optimization convergence for $n=50$.</div>
-                    </div>
-                    
+
+
                 </div>
             </div>
             
