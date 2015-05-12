@@ -56,7 +56,6 @@
                     <h4>Model Classification</h4>
                     
                     <p>Bayesian methods are only compatible with numerical data and do not work directly with classification problems, so we need to convert the categorical data and classes into numerical data and labels.</p>
-
                     
                     <p>The assumption that the 3 labels lie on a linear spectrum is not necessarily a safe assumption, and the limits are set rather arbitrarily. A more natural and common method in machine learning is to build a classifier that decides between 2 classes. In this case, we can either build 3 one-versus-one classifiers or 3 one-versus-rest classifiers and use majority vote (or probabilities in the case of a tie) to make the final classification.</p>
                     
@@ -115,7 +114,11 @@
                     <div class="panel-footer">Effect of increasing number of nearest neighbors on accuracy.</div>
                     </div>
                     
-
+                    <h4>Conclusions </h4>
+                    
+                    <p>Decision trees are a machine learning method in which a tree of rules is built. One traverses down the tree, and each node represents a rule based on the data's features. The leaves are the final decision. The nodes are built based on which features have the most predictive power for classification. Random forests are an extension of decision trees in which many trees are trained, and stochasticity is introduced to make the trees different, which decreases bias. We show in randomforest\_explore.ipynb that random forests on a small subset of features can reach an accuracy of 79\%. Further experimentation and more sophisticated feature extraction can reach prediction accuracies of 83% on this data. </p>
+                    
+                    <p> Bayesian modeling is probably not the best method to use for this type of problem. It assumes that the classification can be described by some sort of model, and we would have to guess this model ahead of time. Decision trees and random forests do not assume any sort of relation between the variable features and the labels, and merely seek out the variable features with the highest predictive power. Second, there are a lot of parameters in the MH sampler that need to be tuned, including initial guesses for the parameters and step sizes. Additionally, Bayesian modeling takes extremely long to train, on the order of hours on a laptop, assuming that the initial guesses for the parameters and step sizes are set correctly. Training k-NN and random forests take on the order of minutes. </p>
                     
                     </div>
                     </div>
