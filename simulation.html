@@ -58,9 +58,9 @@
                     <p>Bayesian methods are only compatible with numerical data and do not work directly with classification problems, so we need to convert the categorical data and classes into numerical data and labels.</p>
                     
                     $$\begin{aligned}
-                    functional:  & 0.67\leq y_i \\
-                    functional needs repair: & 0.33<y_i<0.67
-                    non functional: &  y_i \leq 0.33\end{aligned}$$
+                    \mathrm{functional:  } & 0.67\leq y_i \\
+                    \mathrm{functional needs repair: } & 0.33<y_i<0.67
+                    \mathrm{non functional: } &  y_i \leq 0.33\end{aligned}$$
                     
                     <p>The assumption that the 3 labels lie on a linear spectrum is not necessarily a safe assumption, and the limits are set rather arbitrarily. A more natural and common method in machine learning is to build a classifier that decides between 2 classes. In this case, we can either build 3 one-versus-one classifiers or 3 one-versus-rest classifiers and use majority vote (or probabilities in the case of a tie) to make the final classification.</p>
                     
