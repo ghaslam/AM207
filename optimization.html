@@ -72,19 +72,6 @@
                     Z &= \min \sum_{i=0}^n \sum_{j\ne i,j=0}^n C_{ij} X_{ij}\\
                     \end{aligned}$$
                     
- 
-                    
-                    <p>As is clear from the constraints, this is an integer linear program (ILP) where:</p>
-                    
-                    <ul>
-                    <li>$x_{ij}$ is a binary decision variable indicating whether we go from location $i$ to location $j$.</li>
-                    <li>$c_{ij}$ is the distance between location $i$ and location $j$. (Note: in our application, we deal with geospatial data on a large enough scale that the Euclidean distance is actually very imprecise. In order to model distances over the planet’s surface, we use the Haversine formula.)</li>
-                    <li>The objective function is the sum of the distances for routes that we decide to take.</li>
-                    <li>The final constraint ensures that all locations are visited once and only once.</li>
-                    </ul>
-                    
-                    <p>The problem, of course, is that brute force solution of the TSP is $\mathcal{O}$$(n!)$. Traditional, deterministic algorithm approaches such as branch-and-bound or branch-and-cut are still impractical for larger numbers of nodes. In many cases, exhaustive search for global optimality is not even particularly helpful as long as the solution found is good enough. We will use simulated annealing (SA) to get acceptable solutions to the TSP.</p>
-                    
                     <p>Figures <a href="#1">1</a> and <a href="#2">2</a> show the effect of simulated annealing on reducing the total distance travelled by the maintenance crew and suggest a near-optimal route between the pumps in need of repair. Due to the large number of locations, only a subset are shown in order to make viewing easier. The depot in Dar Es Salaam is highlighted in red. The trace plot shown in Figure <a href="#1">1</a> shows that the SA algorithm has approached a stable route distance which is significantly shorter than the original random route..</p>
                     
                     <p></p>
