@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="img/favicon.ico">
+
+  <title>AM 207 Final Project</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/yeti/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+
+    </head>
+
+    <body>
+
+      <div class="container">
+        <div class="header">
+          <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="simulation.html">Simulation</a></li>
+            <li><a href="optimization.html">Optimization</a></li>
+            <li><a href="https://github.com/ghaslam/AM207/" target="_blank">
+              <img src="img/GitHub-Mark-32px.png" height="18" style="vertical-align:text-top;"/> Code</a></li>
+            </ul>
+            <h3 class="text-muted">AM 207 Final Project</h3>
+          </div>
+
+          <div class="container">
+            <h2>Predicting water pump failure in Tanzania and optimising maintenance routes</h2>
+            <p class="view"><a href="https://github.com/ghaslam/AM207">View the Project on GitHub <small>ghaslam/AM207</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ghaslam/AM207/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ghaslam/AM207/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ghaslam/AM207">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+          </div>
+
+          <div class="jumbotron">
+              <iframe src="//player.vimeo.com/video/94293810?color=ffffff" width="520" height="293" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+
+          <div class="row marketing">
+            <div class="col-md-6">
+            <h3>Background</h3>
+
+              <p>The data comes from ACLED (Armed Conflict Location and Event Data Project), which is a dataset with locations, dates, fatalities, motivation, actors involved, and other information about civil conflicts in Africa. Their collection of data on Uganda covers 1997-2013, and they have a real-time tracker of events reported in 2014. The need for an understanding of these patterns of conflict is clear, as ACLED notes: </p>
+
+              <blockquote>
+                This dataset codes the dates and locations of all reported political violence events in over 50 developing countries. Political violence includes events that occur within civil wars or periods of instability. Although civil war occurrence is decreasing across African countries, new forms of political violence are becoming more common.
+              </blockquote>
+
+              <p>In this project, we focus on the Republic of Uganda, for which the dataset contains around 4,500 observations of civil violence. Each observation includes the date, geographic location, event type, number of fatalities for the event, actors involved and a meta-measure which estimates how precise these measures are. Figure <a href="#1">1</a> shows these conflicts scattered on a political map of Uganda.</p>
+
+              <div class="panel panel-info">
+                <a name="1"></a>
+                <div class="panel-heading">Figure 1</div>
+                <div class="panel-body">
+                  <img src="img/uganda.png" width="100%" max-width="600" />
+                </div>
+                <div class="panel-footer">Civil conflicts in Uganda 1997-2013.</div>
+              </div>
+
+            </div> <!-- /col -->
+
+            <div class="col-md-6">
+
+              <h3>Overview</h3>
+
+              <p>In the <a href="simulation.html">simulation part of this project</a>, we use the data and MCMC methods to simulate where civil conflicts happen in both space and time. Instead of creating a hierarchical, generative model that attempts to fit parameters for all kinds of underlying causes, we instead treat the past data as an empirical distribution from which to sample. This works out well for us, because the goal here is less to predict exactly when and where conflicts take place than to create plausible scenarios for the optimization part of the project.</p>
+
+              <p>In the <a href="optimization.html">optimization part of this project</a>, we use the temporal/geospatial conflict occurence model in the first section as both inspiration for the aid delivery analogy and also as a source of randomly sampled data points representing geospatially distributed conflicts.</p>
+
+              <div class="alert alert-info">
+                <strong>Note:</strong> The code for this project is available in the <a href="https://github.com/pjbull/civil_conflict/" target="_blank">GitHub repo</a>, and an IPython notebook demonstrating some of the techniques and basic usage can be viewed <a href="http://nbviewer.ipython.org/github/pjbull/civil_conflict/blob/master/Uganda_Political_Conflict.ipynb" target="_blank">here</a>.
+              </div>
+
+              <h3>Conclusions</h3>
+
+              <p>In each part of this problem, analytical solutions either do not exist (e.g. in the distribution of events) or are computationally infeasible (e.g. in the TSP/Knapsack optimizations). We found that using a metaheuristic such as SA converged on robust solutions in relatively short order. In the future, we would like to formulate our loss function based on real world data about refugee locations and aid distribution requirements; our methodology would not change, but the solutions would be more useful for predictive tasks. Additionally, separate models could be fit and incorporated which realistically model how much of each type of aid is needed at each conflict location. Future research might also include adding many more constraints or twists to the problem, and trying different stochastic optimization techniques such as genetic optimization, Tabu search, or ant colony optimization.</p>
+            
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+
+          <div class="footer">
+            <p>S. Kim, G. Haslam, 2015</p>
+          </div>
+
+        </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+  </body>
+  </html>
