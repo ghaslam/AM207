@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{UN2013}
 {UN Water}, ``{World Water Day Day 2013 - Facts and Figures},'' {\em
@@ -29,12 +29,17 @@ Y.~Liu, {\em Applying A Data Driven Approach To Failure Prediction For Rod Pump
 K.~Menger, ``Das botenproblem,'' {\em Ergebnisse eines Mathematischen
   Kolloquiums}, vol.~2, pp.~11--12, 1932.
 
-\bibitem{Winston}
-W.~Winston, {\em Operations Research: Applications and Algorithms}.
-\newblock Thomson Brooks/Cole, 2004.
+\bibitem{Miller1960}
+C.~Miller, A.~Tucker, and R.~Zemlin, ``Integer programming formulation of
+  travelling salesman problems,'' {\em J. ACM}, vol.~7, pp.~326--329, 1960.
 
-\bibitem{Murphy}
-K.~P. Murphy, {\em Machine Learning: a Probabilistic Perspective}.
-\newblock Cambridge, MA: MIT Press, 2012.
+\bibitem{Sinnot1983}
+R.~Sinnot, ``{Virtues of the Haversine},'' {\em Sky and Telescope}, vol.~68,
+  no.~2, p.~159, 1983.
+
+\bibitem{Gavish1978}
+B.~Gavish and S.~Graves, ``{The Travelling Salesman Problem and Related
+  Problems},'' Working Paper OR 078-78, Massachusetts Institute of Technology,
+  Operations Research Center, 1978.
 
 \end{thebibliography}
