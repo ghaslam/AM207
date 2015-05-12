@@ -60,11 +60,11 @@
                     $$\begin{aligned}
                     \mathrm{functional: } & 0.67\leq y_i  &&  \\
                     \mathrm{needs-repair: } & 0.33<y_i<0.67 && \\
-                    \mathrm{non-functional: }& y_i \leq 0.33 && \end{aligned}$$
+                    \mathrm{non-functional: }& y_i \leq 0.33\end{aligned}$$
                     
                     <p>The assumption that the 3 labels lie on a linear spectrum is not necessarily a safe assumption, and the limits are set rather arbitrarily. A more natural and common method in machine learning is to build a classifier that decides between 2 classes. In this case, we can either build 3 one-versus-one classifiers or 3 one-versus-rest classifiers and use majority vote (or probabilities in the case of a tie) to make the final classification.</p>
                     
-                    <h5>Categorical data</h5>
+                    <h4>Categorical data</h4>
                     
                     <p> Many of the data features are categorical data that do not have any numerical interpretation, so we cannot convert them the same way that we converted our label. For example, the "installer" feature has labels such as "UNICEF," "Roman," and "Artisan." To deal with these, we use one-of-k representation in which we add a new feature column for every unique value. For example, we would add the columns "installer=UNICEF," "installer=Roman," and "installer=Artisan." The "installer=UNICEF" would be 1 if that data's "installer" was "UNICEF," and 0 otherwise. So if there are $k$ unique values for a particular categorical feature, then for each data point, we add on a vector of length $k$ which has a single 1 and $k-1$ 0s.</p>
                     
@@ -82,7 +82,7 @@
                     
                     <h4>Prediction results</h4>
 
-                    <p>Figure <a href="#3">3</a> shows shows the trace plot of the model parameters with blockwise updating and componentwise updating. These are after the burn-in period. Blockwise updating has an acceptance rate of nearly 0 because we are updating 8 parameters at a time. Componentwise updating has a much higher acceptance rate, although at a huge time cost. Figure <a href="#4">4</a> shows the distribution of the samples as a two-dimensional histogram.</p>
+                    <p>Figures <a href="#2">2</a> and <a href="#3">3</a> shows shows the trace plot of the model parameters with blockwise updating and componentwise updating. These are after the burn-in period. Blockwise updating has an acceptance rate of nearly 0 because we are updating 8 parameters at a time. Componentwise updating has a much higher acceptance rate, although at a huge time cost.</p>
                     
                     <div class="panel panel-info">
                     <a name="2"></a>
@@ -102,79 +102,24 @@
                         <div class="panel-footer">Componentwise updating.</div>
                     </div>
                     
+
+
+                    <p>The parameters chosen for the model are "longitude," "latitude," "age" (2015-"construction\_year"), "gps\_height," "quantity=dry," and "population." We see that $\beta_5$ has significant predictive power since this is the farthest from 0. This corresponds to the "quantity=dry" feature. $\beta_0$ is the constant offset, which we would expect to be non-zero. By fine-tuning the step parameters and carefully choosing features, we reach a cross-validation prediction accuracy of 60.6\%.</p>
                     
+                    <h4>Comparison to Machine Learning Approaches</h4>
                     
-                    
-                    <div class="panel panel-info">
-                        <a name="4"></a>
-                        <div class="panel-heading">Figure 4</div>
-                        <div class="panel-body">
-                            <img src="img/histogram.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">Histogram of slice samples from the empirical distribution.</div>
-                    </div>
-                    
-                    <p>When slice sampling, there are a number of parameter choices that are imporant. We want to choose our rectangle widths, burn-in, and thinning parameters appropriately. In testing, a thinning value of 10 reduced autocorrelation to less than 0.1 at a time lag of 1. We can see this result in figure <a href="#5">5</a>. We used the Gelman-Rubin potential scale reduction factor to determine if we were observing favorable mixing. Generally, a value less than 1.1 indicates good mixing. In both of our dimensions, the Gelman-Rubin statistic was less than this threshold. We also calculated the Geweke statistic, which is used to indicate convergence. A value less than 2 indicates convergence and for our draws, this statistic was $\ll$ 1. We can also examine convergence by looking at the trace plots for the samples. As we see in figure <a href="#6">6</a> these appear stationary.</p>
-                    
+                    <p>Here we compare our methods with other common machine learning methods. The k-Nearest Neighbors algorithm (also known as the k-NN algorithm) is a machine learning algorithm that can be applied to classification problems. There is no training aspect to the algorithm. Predictions are made by taking the $k$ nearest data points to the desired data point in feature space, and taking the majority of their labels. The labels can also be weighted by $1/d$, where $d$ is the distance from the desired data point to the labeled data point. We apply the k-NN algorithm using only the longitude and latitude data, so we are picking the geographically nearest neighbors. Accuracy in cross-validation is shown in the Figure <a href="#4">4</a> as a function of $k$. We see that it reaches 69\% prediction accuracy.</p>
                     
                     <div class="panel panel-info">
-                        <a name="5"></a>
-                        <div class="panel-heading">Figure 5</div>
-                        <div class="panel-body">
-                            <img src="img/autocorr-latlong.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">Autocorrelation for the samples from latitude and longitude</div>
-                    </div>
-                    
-                    
-                    <div class="panel panel-info">
-                        <a name="6"></a>
-                        <div class="panel-heading">Figure 6</div>
-                        <div class="panel-body">
-                            <img src="img/trace-plots.png" width="100%" max-width="600" />
-                        </div>
-                        <div class="panel-footer">Trace plots for draws from the latitude and longitude</div>
-                    </div>
-                    
-                    <h4>Events in time</h4>
-                    
-                    <p>As a modeling assumption, we separate the dimensions of space and time as being independent. To model events in time across the country, we use an autoregressive Poisson GLM. While standard autoregressive models create a linear relation between a future value and a previous value,
-                    the Poisson GLM permits a linear relation between previous data and the mean of a Poisson distribution. This will allow us to retain the probabilistic interpretation of the events in time.</p>
-                    
-                    <p>In order to model events using a Poisson distribution, we must discretize our time dimension. We opted for month-long increments. The thinking behind this decision is that we want to use sample draws to run our aid optimizations. If a model like this were to be used in planning for future conflicts, having a month-long window for a plan seems like a good balance between precision and logistic concerns.</p>
-                    
-                    <p>The Autoregressive Poisson GLM model can be described as a log-linear relationship between the number of events of political violence and the mean of a Poisson distribution. We start with a timeseries,
-                    $\mathbf{X} = \{x_0, x_1,\ldots, x_N\}$, of $N$ counts of events at each discretized point in time. We also start with a lag $\Lambda$ that is the number of previous time steps to include in the model. We can now describe our features at time $t$ as the $\Lambda$ previous time steps:
-                    $\mathbf{X_{t, \Lambda}} = \{x_{t-\Lambda}, x_{t-\Lambda-1},\ldots, x_t\}$.</p>
-                    
-                    <p>The linear predictor in the autoregressive model at a time step is $\eta_t$, and it is related to the mean of the Poisson distribution,
-                    $\mu_t$, by its canonical link function, $\log$.</p>
-                    
-                    $$\begin{aligned}
-                    \eta_t &= \mathbf{X}_{t, \Lambda}'\beta. \\
-                    \mu_t &= \log(\eta_t) = \log(\mathbf{X}_{t, \Lambda}'\beta) \\\end{aligned}$$
-                    
-                    <p>Finally, the only parameter to the Poisson distribution is this mean, so the distribution of counts, $k$, at some time t+1 can be given by:</p>
-                    
-                    $$\begin{aligned}
-                    p(k | \mu_t) &= \frac{\mu_t^k}{k!}e^{-\mu_t} \\
-                    p(k | \mathbf{X}_{t, \Lambda}, \beta) &= \frac{\log(\mathbf{X}_{t, \Lambda}'\beta)^k}{k!}e^{-\log(\mathbf{X}_{t, \Lambda}'\beta)} \end{aligned}$$
-                    
-                    <p>We can fit this model by using Fisher scoring to calculate $\beta_\mathrm{MLE}$, the coefficients of the model. Figure <a href="#7">7</a> shows this model as compared to actual rates of conflict incidence.</p>
-                    
-                    
-                    <div class="panel panel-info">
-                    <a name="7"></a>
-                    <div class="panel-heading">Figure 7</div>
+                    <a name="4"></a>
+                    <div class="panel-heading">Figure 4</div>
                     <div class="panel-body">
-                    <img src="img/poisson-regression.png" width="100%" max-width="600" />
+                    <img src="img/kNN_accuracy_vs_K.png" width="100%" max-width="600" />
                     </div>
-                    <div class="panel-footer">The Poisson regression model.</div>
+                    <div class="panel-footer">Effect of increasing number of nearest neighbors on accuracy.</div>
                     </div>
                     
-                    <h4>Putting together the spatial and temporal</h4>
-                    
-                    <p>We can now use our draws over space and time to generate a simulation of future conflicts in Uganda. These simulated scenarios will serve as the basis of our aid delivery optimization. The combination of modeling conflict events in space and time along with optimizing aid delivery could prove helpful to organizations such as the Red Cross in ordering supplies, allocating staff and volunteers, and developing infrastructure.
+
                     
                     </div>
                     </div>
