@@ -56,17 +56,23 @@
                     
                     <h4>The traveling salesman problem</h4>
                     
-                    <p>One question of particular interest is how to route emergency aid to locations where it is needed. For concreteness, let’s postulate a Red Cross medical or food supply caravan that originates from the organization’s in-country headquarters. This caravan wishes to visit all $n$ emergent locations in order to deliver needed supplies. They wish to do so in the most efficient manner possible.</p>
+                    <p>Having hopefully identified a method for accurately predicting which pumps will fail, we can imagine that the Tanzanian Ministry of Water will want to task a maintenance crew with visiting each of these locations. We may also assume that the maintenance crew are based in the commercial capital of Dar Es Salaam. The crew wishes to visit all $N$ locations in as efficient manner as possible. This problem is equivalent to the traveling salesman problem (TSP). A compact mathematical formulation of the problem is given as follows:</p>
                     
-                    <p>This is the traveling salesman problem (TSP), an optimization problem that is quite well known. It was first described in 1932 by Karl Menger and has been studied extensively ever since. Here is the traditional convex optimization specification of the problem:</p>
                     
                     $$\begin{aligned}
-                    \min &\sum_{i=0}^n \sum_{j\ne i,j=0}^nc_{ij}x_{ij} &&  \\
-                    \mathrm{s.t.} & \\
+                    \textrm{subject to} & \\
+                    & \sum_{i=1}^n X_{ij} = 1 && j = 1, 2 , \cdots, n \\
+                    & \sum_{j=1}^n X_{ij} = 1 && i = 1, 2, \cdots, n \\
+                    &U_i - U_j + nX_{ij} \le n-1 && i, j = 2, \cdots, n i\ne j \\
                     & x_{ij} \in \{0, 1\} && i,j=0, \cdots, n \\
-                    & \sum_{i=0,i\ne j}^n x_{ij} = 1 && j=0, \cdots, n \\
-                    & \sum_{j=0,j\ne i}^n x_{ij} = 1 && i=0, \cdots, n \\
-                    &u_i-u_j +nx_{ij} \le n-1 && 1 \le i \ne j \le n\end{aligned}$$
+                    \end{aligned}$$
+                    
+                    $$\begin{aligned}
+                    \textrm{Find variables }& X_{ij}  \textrm{ and } U_i i,j = 1, 2, \cdots , n \textrm{ that minimize}:\\
+                    Z &= \min \sum_{i=0}^n \sum_{j\ne i,j=0}^n C_{ij} X_{ij}\\
+                    \end{aligned}$$
+                    
+ 
                     
                     <p>As is clear from the constraints, this is an integer linear program (ILP) where:</p>
                     
