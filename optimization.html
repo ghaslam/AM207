@@ -98,16 +98,16 @@
                     
                     <p>With one maintenance crew, the total distance travelled is 41,000 km, which is obviously too much for one crew to travel. It is also important to note that we use the Haversine formula for calculating the distance between locations as the straight-line, Euclidean distance is imprecise for large distances on a sphere. An obvious extension of the problem is to imagine that instead of making a single visiting every pump, the crew make multiple trips, returning to the depot in Dar Es Salaam each time (or equivalently, that multiple crews leave and return to the depot each day). This leads to a decrease in total distance travelled from 41,000 km to 34,500 km. This problem is commonly referred to as the vehicle routing problem (VRP).</p>
                     
-                    <p>Finally, we looked at prioritising the damaged pumps that were identified as being 'remote', with the assumption that people depending on these pumps would have fewer alternative sources nearby that they could visit if their own pump failed. We first identified the average distance from each pump to its 5 nearest neighbours using the k-dimensional tree method. We then added this weight to the cost function used by the SA algorithm. As expected, this led to a significant reorganisation of the route and an increase in the total distance travelled but with the benefit of reaching those in need more quickly.</p>
+                    <p>Finally, we looked at prioritising the damaged pumps that were identified as being 'remote', with the assumption that people depending on these pumps would have fewer alternative sources nearby that they could visit if their own pump failed. We first identified the average distance from each pump to its 5 nearest neighbours using the k-dimensional tree method. We then added this weight to the cost function used by the SA algorithm. As expected, this led to a significant reorganisation of the route and an increase in the total distance travelled but with the benefit of reaching those in need more quickly as seen in Figure <a href="#3">3</a>.</p>
                     
                     <p></p>
                     <div class="panel panel-info">
-                    <a name="2"></a>
-                    <div class="panel-heading">Figure 2</div>
+                    <a name="3"></a>
+                    <div class="panel-heading">Figure 3</div>
                     <div class="panel-body">
-                    <img src="img/Optimised-Route.png" width="100%" max-width="600" />
+                    <img src="img/Prioritising-remote-pumps.png" width="100%" max-width="600" />
                     </div>
-                    <div class="panel-footer">Decrease in distance due to annealing.</div>
+                    <div class="panel-footer">Effect of prioritising remote pumps.</div>
                     </div>
 
 
