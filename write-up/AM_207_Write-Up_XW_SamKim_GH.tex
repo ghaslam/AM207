@@ -70,7 +70,7 @@ The data for this project was provided as part of a data science challenge run b
 \begin{table}
 \caption{Sample of the DrivenData Tanzania water wells dataset}
 \centering
-\resizebox{\columnwidth}{!}{%
+\resizebox{\columnwidth}{!}{
 \begin{tabular}{lrlrlrrrr}
 \toprule
 ID &         Installer        &  GPS Height & Longitude & Latitude &   Construction\_Year &  Source\_Type &  Quantity\_Type & Status\_Group  \\
@@ -247,7 +247,22 @@ Figure \ref{fig:TSP} shows the effect of simulated annealing on reducing the tot
 
 \subsection{Modifications}
 
-With one maintenance crew, the total distance travelled is 41,000 km, which is obviously too much for one crew to travel. It is also important to note that we use the Haversine formula for calculating the distance between locations as the straight-line, Euclidean distance is imprecise for large distances on a sphere \cite{Sinnot1983}. An obvious extension of the problem is to imagine that instead of making a single visiting every pump, the crew make multiple trips, returning to the depot in Dar Es Salaam each time (or equivalently, that multiple crews leave and return to the depot each day). This leads to a decrease in total distance travelled from 41,000 km to 34,500 km. This problem is commonly referred to as the vehicle routing problem (VRP). Gavish et. al. describe a range of other interesting formulations of the TSP which would be relevant to our situation \cite{Gavish1978}. Finally, we looked at prioritising the damaged pumps that were identified as being 'remote', with the assumption that people depending on these pumps would have fewer alternative sources nearby that they could visit if their own pump failed. We first identified the average distance from each pump to its 5 nearest neighbours using the k-dimensional tree method. We then added this weight to the cost function used by the SA algorithm. As expected, this led to a significant reorganisation of the route and an increase in the total distance travelled but with the benefit of reaching those in need more quickly.
+With one maintenance crew, the total distance travelled is 41,000 km, which is obviously too much for one crew to travel. It is also important to note that we use the Haversine formula for calculating the distance between locations as the straight-line, Euclidean distance is imprecise for large distances on a sphere \cite{Sinnot1983}. An obvious extension of the problem is to imagine that instead of making a single visiting every pump, the crew make multiple trips, returning to the depot in Dar Es Salaam each time (or equivalently, that multiple crews leave and return to the depot each day). This leads to a decrease in total distance travelled from 41,000 km to 34,500 km. This problem is commonly referred to as the vehicle routing problem (VRP). Gavish et. al. describe a range of other interesting formulations of the TSP which would be relevant to our situation \cite{Gavish1978}. Finally, we looked at prioritising the damaged pumps that were identified as being 'remote', with the assumption that people depending on these pumps would have fewer alternative sources nearby that they could visit if their own pump failed. We first identified the average distance from each pump to its 5 nearest neighbours using the k-dimensional tree method. We then added this weight to the cost function used by the SA algorithm. As expected, this led to a significant reorganisation of the route and an increase in the total distance travelled but with the benefit of reaching those in need more quickly. The effect of these modifications are show in \ref{fig:Modifications}.
+
+\begin{figure*}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/Multiple-salesmen}
+		\caption{Effect of adding multiple maintenance crews.}
+		\label{fig:Multiple-crews}
+	\end{subfigure}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{figures/Prioritising-remote-pumps}
+		\caption{Optimised maintenance route for prioritising more remotes pumps.}
+		\label{fig:Priority-remote}
+	\end{subfigure}
+	\caption{Adding multiple maintenance crews and prioritising remote pumps.}
+	\label{fig:Modifications}
+\end{figure*}
 
 It would be interesting in future work on this data to look at solving the Knapsack Problem to simulate the maintenance crew having a constrained amount of materials to allocate to each pump repair and also the selection of the optimal position of the depot. Another interesting exercise would be to look at how alternative solutions for the TSP compare in terms of both processing time and distance -- for example Genetic Algorithms have been used successfully to solve the TSP.
 
